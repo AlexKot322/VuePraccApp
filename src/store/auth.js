@@ -12,7 +12,7 @@ export default {
       }
     },
     async logout({ commit }) {
-      await firebase.auth().signOut;
+      await firebase.auth().signOut();
       commit("clearInfo");
     },
     async register({ commit, dispatch }, { email, password, name }) {

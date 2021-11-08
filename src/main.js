@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
+import Paginate from "vuejs-paginate";
 import App from "./App.vue";
 import Loader from "@/components/app/Loader.vue";
 import "./registerServiceWorker";
@@ -7,6 +8,7 @@ import router from "./router";
 import store from "./store";
 import "materialize-css/dist/js/materialize.min";
 import dateFilter from "./filters/date.filter";
+import tooltipDirective from "@/directives/tooltip.directive";
 import currencyFilter from "./filters/currency.filter";
 import messagePlugin from "@/utils/message.plugin";
 
@@ -16,7 +18,9 @@ Vue.use(messagePlugin);
 Vue.filter("date", dateFilter);
 Vue.filter("currency", currencyFilter);
 Vue.use(Vuelidate);
+Vue.directive("tooltip", tooltipDirective);
 Vue.component("Loader", Loader);
+Vue.component("paginate", Paginate);
 
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app";
