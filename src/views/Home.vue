@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Счет</h3>
+      <h3>{{ 'Menu_Bill' | localize }}</h3>
 
       <button class="btn waves-effect waves-light btn-small" @click="refresh">
         <i class="material-icons">refresh</i>
@@ -18,11 +18,16 @@
 </template>
 
 <script>
-import HomeBill from "../components/HomeBill.vue";
-import HomeCurrency from "../components/HomeCurrency.vue";
+import HomeBill from '../components/HomeBill.vue'
+import HomeCurrency from '../components/HomeCurrency.vue'
 
 export default {
-  name: "home",
+  name: 'home',
+  metaInfo() {
+    return {
+      title: this.$title('Menu_Bill'),
+    }
+  },
   data: () => ({
     loading: true,
     currency: null,
@@ -32,15 +37,15 @@ export default {
     HomeBill,
   },
   async mounted() {
-    this.currency = await this.$store.dispatch("fetchCurrency");
-    this.loading = false;
+    this.currency = await this.$store.dispatch('fetchCurrency')
+    this.loading = false
   },
   methods: {
     async refresh() {
-      this.loading = true;
-      this.currency = await this.$store.dispatch("fetchCurrency");
-      this.loading = false;
+      this.loading = true
+      this.currency = await this.$store.dispatch('fetchCurrency')
+      this.loading = false
     },
   },
-};
+}
 </script>

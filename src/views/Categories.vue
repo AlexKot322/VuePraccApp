@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Категории</h3>
+      <h3>{{ 'Menu_Categories' | localize }}</h3>
     </div>
     <section>
       <Loader v-if="loading" />
@@ -13,17 +13,22 @@
           @updated="updateCategories"
           :categories="categories"
         />
-        <p v-else class="center">Категорий пока нет</p>
+        <p v-else class="center">{{ 'CategoriesNotFound' | localize }}</p>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import CategoryCreate from "@/components/CategoryCreate";
-import CategoryEdit from "@/components/CategoryEdit";
+import CategoryCreate from '@/components/CategoryCreate'
+import CategoryEdit from '@/components/CategoryEdit'
 export default {
-  name: "categories",
+  name: 'categories',
+  metaInfo() {
+    return {
+      title: this.$title('Menu_Categories'),
+    }
+  },
   data: () => ({
     categories: [],
     loading: true,
@@ -35,18 +40,18 @@ export default {
   },
   methods: {
     addNewCategory(category) {
-      this.categories.push(category);
+      this.categories.push(category)
     },
     updateCategories(category) {
-      const idx = this.categories.findIndex((c) => c.id === category.id);
-      this.categories[idx].title = category.title;
-      this.categories[idx].limit = category.limit;
-      this.updateCount++;
+      const idx = this.categories.findIndex((c) => c.id === category.id)
+      this.categories[idx].title = category.title
+      this.categories[idx].limit = category.limit
+      this.updateCount++
     },
   },
   async mounted() {
-    this.categories = await this.$store.dispatch("fetchCategories");
-    this.loading = false;
+    this.categories = await this.$store.dispatch('fetchCategories')
+    this.loading = false
   },
-};
+}
 </script>

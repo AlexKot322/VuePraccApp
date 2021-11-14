@@ -2,7 +2,7 @@
   <div class="col s12 m6">
     <div>
       <div class="page-subtitle">
-        <h4>Редактировать</h4>
+        <h4>{{ 'Edit' | localize }}</h4>
       </div>
 
       <form @submit.prevent="submitHandler">
@@ -16,7 +16,7 @@
               {{ option.title }}
             </option>
           </select>
-          <label>Выберите категорию</label>
+          <label>{{ 'ChooseCategory' | localize }}</label>
         </div>
 
         <div class="input-field">
@@ -26,11 +26,11 @@
             v-model="title"
             :class="{ invalid: $v.title.$dirty && !$v.title.required }"
           />
-          <label for="name">Название</label>
+          <label for="name">{{ 'Title' | localize }}</label>
           <span
             class="helper-text invalid"
             v-if="$v.title.$dirty && !$v.title.required"
-            >Введите название категории</span
+            >{{ 'EnterTitleCategory' | localize }}</span
           >
         </div>
 
@@ -41,16 +41,17 @@
             v-model.number="limit"
             :class="{ invalid: $v.limit.$dirty && !$v.limit.minValue }"
           />
-          <label for="limit">Лимит</label>
+          <label for="limit">{{ 'Limit' | localize }}</label>
           <span
             v-if="$v.limit.$dirty && !$v.limit.minValue"
             class="helper-text invalid"
-            >Минимальная значение {{ $v.limit.$params.minValue.min }}</span
+            >{{ 'MinValue' | localize }}
+            {{ $v.limit.$params.minValue.min }}</span
           >
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
-          Обновить
+          {{ 'Update' | localize }}
           <i class="material-icons right">send</i>
         </button>
       </form>
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-import { required, minValue } from "vuelidate/lib/validators";
+import { required, minValue } from 'vuelidate/lib/validators'
 
 export default {
   props: {
@@ -71,7 +72,7 @@ export default {
   },
   data: () => ({
     select: null,
-    title: "",
+    title: '',
     limit: 1,
     current: null,
   }),
@@ -81,16 +82,16 @@ export default {
   },
   watch: {
     current(catId) {
-      const { title, limit } = this.categories.find((c) => c.id === catId);
-      this.title = title;
-      this.limit = limit;
+      const { title, limit } = this.categories.find((c) => c.id === catId)
+      this.title = title
+      this.limit = limit
     },
   },
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
-        this.$v.$touch();
-        return;
+        this.$v.$touch()
+        return
       }
 
       try {
@@ -98,29 +99,29 @@ export default {
           id: this.current,
           title: this.title,
           limit: this.limit,
-        };
-        await this.$store.dispatch("updateCategory", categoryData);
-        this.$message("Категория успешно обновлена");
-        this.$emit("updated", categoryData);
+        }
+        await this.$store.dispatch('updateCategory', categoryData)
+        this.$message('Категория успешно обновлена')
+        this.$emit('updated', categoryData)
       } catch (e) {
-        throw Error(e);
+        throw Error(e)
       }
     },
   },
   created() {
-    const { id, title, limit } = this.categories[0];
-    this.current = id;
-    this.title = title;
-    this.limit = limit;
+    const { id, title, limit } = this.categories[0]
+    this.current = id
+    this.title = title
+    this.limit = limit
   },
   mounted() {
-    this.select = window.M.FormSelect.init(this.$refs.select);
-    window.M.updateTextFields();
+    this.select = window.M.FormSelect.init(this.$refs.select)
+    window.M.updateTextFields()
   },
   destroyed() {
     if (this.select && this.select.destroyed) {
-      this.select.destroy();
+      this.select.destroy()
     }
   },
-};
+}
 </script>

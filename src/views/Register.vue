@@ -1,7 +1,7 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">{{ 'HomeAccounting' | localize }}</span>
       <div class="input-field">
         <input
           id="email"
@@ -13,16 +13,16 @@
               ($v.email.$dirty && !$v.email.email),
           }"
         />
-        <label for="email">Email</label>
+        <label for="email">{{ 'Email' | localize }}</label>
         <small
           class="helper-text invalid"
           v-if="$v.email.$dirty && !$v.email.required"
-          >Поле email не должно быть пустым
+          >{{ 'EmailFieldNotEmpty' | localize }}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="$v.email.$dirty && !$v.email.email"
-          >Введите корректный email
+          >{{ 'EnterCorrectEmail' | localize }}
         </small>
       </div>
       <div class="input-field">
@@ -37,17 +37,17 @@
               ($v.password.$dirty && !$v.password.minLength),
           }"
         />
-        <label for="password">Пароль</label>
+        <label for="password">{{ 'Password' | localize }}</label>
         <small
           class="helper-text invalid"
           v-if="$v.password.$dirty && !$v.password.required"
-          >Введите пароль</small
+          >{{ 'EnterPass' | localize }}</small
         >
         <small
           class="helper-text invalid"
           v-else-if="$v.password.$dirty && !$v.password.minLength"
-          >Пароль должен быть {{ $v.password.$params.minLength.min }} символов.
-          Сейчас он
+          >{{ 'ValidCharsLength' | localize }}:
+          {{ $v.password.$params.minLength.min }}. {{ 'Now' | localize }}:
           {{ password.length }}
         </small>
       </div>
@@ -58,63 +58,68 @@
           v-model.trim="name"
           :class="{ invalid: $v.name.$dirty && !$v.name.required }"
         />
-        <label for="name">Имя</label>
+        <label for="name">{{ 'Name' | localize }}</label>
         <small
           class="helper-text invalid"
           v-if="$v.name.$dirty && !$v.name.required"
-          >Введите ваше имя</small
+          >{{ 'Message_EnterName' | localize }}</small
         >
       </div>
       <p>
         <label>
           <input type="checkbox" v-model="agree" />
-          <span>С правилами согласен</span>
+          <span>{{ 'AgreeWithRules' | localize }}</span>
         </label>
       </p>
     </div>
     <div class="card-action">
       <div>
         <button class="btn waves-effect waves-light auth-submit" type="submit">
-          Зарегистрироваться
+          {{ 'Register' | localize }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Уже есть аккаунт?
-        <router-link to="/login">Войти!</router-link>
+        {{ 'HaveAnAccount' | localize }}
+        <router-link to="/login">{{ 'Login' | localize }}</router-link>
       </p>
     </div>
   </form>
 </template>
 
 <script>
-import { email, required, minLength } from "vuelidate/lib/validators";
+import { email, required, minLength } from 'vuelidate/lib/validators'
 export default {
-  name: "register",
+  name: 'register',
+  metaInfo() {
+    return {
+      title: this.$title('Register'),
+    }
+  },
   data: () => ({
-    email: "",
-    password: "",
-    name: "",
+    email: '',
+    password: '',
+    name: '',
     agree: false,
   }),
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
-        this.$v.$touch();
-        return;
+        this.$v.$touch()
+        return
       }
 
       const formData = {
         email: this.email,
         password: this.password,
         name: this.name,
-      };
+      }
       try {
-        await this.$store.dispatch("register", formData);
-        this.$router.push("/");
+        await this.$store.dispatch('register', formData)
+        this.$router.push('/')
       } catch (e) {
-        console.log(e);
+        console.log(e)
       }
     },
   },
@@ -124,5 +129,5 @@ export default {
     name: { required },
     agree: { checked: (value) => value },
   },
-};
+}
 </script>
